@@ -7,7 +7,7 @@ WEBHOOK_URL = os.environ.get("DISCORD_WEBHOOK")
 
 # Replace this with a direct image link (Imgur or Discord CDN). 
 # Do NOT use Spotify image links, as they block webhooks.
-AVATAR_URL = "https://preview.redd.it/i-drew-token-pfps-v0-guy4105uhewd1.jpg" 
+AVATAR_URL = "https://images.genius.com/00000000000000000000000000000000.1000x1000x1.jpg" 
 
 # The list of messages the bot will randomly pick from
 messages = [
