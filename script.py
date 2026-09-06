@@ -3,7 +3,7 @@ import random
 import requests
 
 # Grabs the webhook URL from your GitHub repository secrets
-WEBHOOK_URL = os.environ.get("DISCORD_WEBHOOK_URL")
+WEBHOOK_URL = os.environ.get("DISCORD_WEBHOOK")
 
 # Replace this with a direct image link (Imgur or Discord CDN). 
 # Do NOT use Spotify image links, as they block webhooks.
@@ -35,7 +35,7 @@ messages = [
     "can someone hand me another energy drink thanks",
     "glitch in the system glitch in the system glitch in the system",
     "JUST ONE MORE TRACK I PROMISE!",
-    "HEYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY,
+    "HEYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY",
     "screaming in lowercase",
     "WHO TOOK MY HEADPHONES??",
     "bashing my head against the keyboard: sjfgkdshjgfksdhjgf",
