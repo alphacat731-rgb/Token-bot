@@ -1,0 +1,27 @@
+name: Run Token Discord Bot
+
+on:
+  schedule:
+    # Runs automatically roughly every 15 minutes
+    - cron: '*/1 * * * *'
+  workflow_dispatch: # Allows manual trigger button
+
+jobs:
+  post-token-broadcast:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Execute script
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: python script.py
