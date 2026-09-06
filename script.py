@@ -1,6 +1,7 @@
 import os
 import random
 import requests
+import time
 
 # Grabs the webhook URL from your GitHub repository secrets
 WEBHOOK_URL = os.environ.get("DISCORD_WEBHOOK")
@@ -111,29 +112,34 @@ messages = [
 
 def main():
     if not WEBHOOK_URL:
-        print("Error: DISCORD_WEBHOOK_URL secret is not set.")
+        print("Error: DISCORD_WEBHOOK secret is not set.")
         return
 
-    # Select a random message from the list
-    chosen_message = random.choice(messages)
+    # Configuration for burst mode: sends 4 messages per run, 15 seconds apart
+    MESSAGES_TO_SEND = 4
+    DELAY_SECONDS = 15
 
-    # The payload now only contains the username, avatar, and the raw text message
-    payload = {
-        "username": "TOKEN",
-        "content": chosen_message
-    }
+    for i in range(MESSAGES_TO_SEND):
+        chosen_message = random.choice(messages)
 
-    print(f"Sending message: {chosen_message}")
-    
-    # Send the request to Discord
-    response = requests.post(WEBHOOK_URL, json=payload)
-    
-    # Check if it was successful
-    if response.status_code in [200, 204]:
-        print("Successfully sent to Discord!")
-    else:
-        print(f"Failed to send. Status code: {response.status_code}")
-        print(response.text)
+        payload = {
+            "username": "TOKEN",
+            "content": chosen_message
+        }
+
+        print(f"Sending message {i+1}/{MESSAGES_TO_SEND}: {chosen_message}")
+        
+        response = requests.post(WEBHOOK_URL, json=payload)
+        
+        if response.status_code in [200, 204]:
+            print("Successfully sent to Discord!")
+        else:
+            print(f"Failed to send. Status code: {response.status_code}")
+            print(response.text)
+
+        # Wait before sending the next message (skip delay on the final message)
+        if i < MESSAGES_TO_SEND - 1:
+            time.sleep(DELAY_SECONDS)
 
 if __name__ == "__main__":
     main()
