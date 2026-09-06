@@ -6,8 +6,9 @@ import time
 # Grabs the webhook URL from your GitHub repository secrets
 WEBHOOK_URL = os.environ.get("DISCORD_WEBHOOK")
 
-# The list of messages the bot will randomly pick from
+# Combined list of over 200 chaotic Token / breakcore messages
 messages = [
+    # --- Original Messages ---
     "MEOW",
     "MEOOOWWWWWWWWWWWWWWWWW",
     "WHY IS THE BASS SO LOUD MY TEETH ARE VIBRATING",
@@ -107,7 +108,109 @@ messages = [
     "bite ur ankle",
     "OVERDRIVE ENGAGED",
     "i swallowed an MP3 player and now my tummy goes bump bump bump",
-    "ENDLESS ENERGY! NEVER STOPPING!"
+    "ENDLESS ENERGY! NEVER STOPPING!",
+    
+    # --- 100 New Chaotic Messages ---
+    "DO YOU HEAR THAT RINGING IN YOUR EARS? THAT'S JUST ME",
+    "my keyboard is sticky from energy drink spray",
+    "SPINNING SO FAST I CAN HEAR COLORS",
+    "syntax error in my soul",
+    "crunching on glass (metaphorically... or not)",
+    "WHO LET ME NEAR THE AUX",
+    "running on pure spite and caffeine",
+    "sub-bass frequencies turning my skeleton into liquid",
+    "glitch core aesthetics 24/7",
+    "i ate a byte of data and now my stomach hurts",
+    "SYSTEM OVERLOAD YAY",
+    "my ping is 9999ms and I'm still vibrating",
+    "press any key to continue... wait there are no keys left i broke them all",
+    "static noise comfort playlist",
+    "screaming into a megaphone underwater",
+    "cat ears twitching to a 250 bpm drop",
+    "error code: too much velocity",
+    "i ran so fast I looped back into yesterday",
+    "bite the hand that feeds (and the keyboard too)",
+    "maximum gain reduction applied to my sanity",
+    "rebooting the universe one glitch at a time",
+    "i can see through time and it sounds like distortion",
+    "nyoom",
+    "drop the bass or i drop you",
+    "paws on the keyboard chaos on the screen",
+    "my blood type is energy drink positive",
+    "who turned down the volume? WHO DID IT??",
+    "charging lasers...",
+    "blinking in morse code at 300 bpm",
+    "unlimited power (and zero focus)",
+    "chewing on electrical wires for fun",
+    "running 50 background tasks and all of them are screaming",
+    "hyperventilating to the rhythm of a kick drum",
+    "i am the storm that is approaching (the sound barrier)",
+    "keyboard smash: qwertzuiopasdfghjklyxcvbnm",
+    "too fast to live too breakcore to die",
+    "my thoughts are just dial-up internet sounds",
+    "pacing back and forth until the floorboards break",
+    "giving the servers a headache",
+    "warning: user has consumed too much digital adrenaline",
+    "rewiring my brain with heavy compression",
+    "chasing shadows in a neon hallway",
+    "is it loud enough? turn it up more",
+    "cat behavior: knocking things off tables at terminal velocity",
+    "syntax error: heart rate too high",
+    "downloading more RAM just to handle the reverb",
+    "void screaming session #492",
+    "glitch in the matrix? no that's just me",
+    "processing... processing... 💥",
+    "i bit the power button",
+    "running entirely on vibes and bad decisions",
+    "ear bleeding frequencies engaged",
+    "where did the time go? it got vaporized by a bass drop",
+    "shaking like a wet cat in a hurricane",
+    "speedrun any % living room furniture destruction",
+    "lost in the sauce (the sauce is pure static)",
+    "beep boop i am an agent of chaos",
+    "my brain has 500 open tabs and 3 are on fire",
+    "screaming into the void until it gives me a candy",
+    "overclocked my heartbeat to 999 GHz",
+    "dropping beats and breaking things",
+    "feline activities involving excessive velocity",
+    "why walk when you can teleport via glitch",
+    "high energy low attention span",
+    "sniffing the router for connection speed",
+    "typing at the speed of light with my face",
+    "crashing the simulation for fun",
+    "bass boosted reality",
+    "nice.",
+    "i have achieved hyper-speed consciousness",
+    "running away from my responsibilities at Mach 5",
+    "pixelated chaos inbound",
+    "destroying my speakers speedrun world record",
+    "chewing on the wifi router antenna",
+    "brain empty, only breakcore",
+    "tactical cat strike incoming",
+    "glitching through walls like a speedrunner",
+    "sending digital noise straight to your timeline",
+    "my shadow is moving faster than I am",
+    "system check: everything is broken and loud",
+    "running past the speed limit in a hallway",
+    "unhinged mode: activated",
+    "snacking on raw electricity",
+    "sound waves bending around my ears",
+    "too much caffeine, not enough time",
+    "zipping across the digital grid",
+    "ears ringing like a church bell in a thunderstorm",
+    "error 418: I'm a teapot (filled with rage)",
+    "shredding through reality like wet paper",
+    "purring at 200 Hz while the bass hits 20 Hz",
+    "speeding down the information superhighway with no brakes",
+    "fragmented thoughts scattered across the hard drive",
+    "charging up the final blast of noise",
+    "skittering across the floor at 3 AM",
+    "infinite loop of pure unadulterated chaos",
+    "whispering into the microphone: *meow*",
+    "the walls are breathing and they're playing an amen break",
+    "digital gremlin energy at maximum capacity",
+    "ready, set, GLITCH",
+    "BYE BYE SANITY SEE YOU NEVER"
 ]
 
 def main():
@@ -115,9 +218,8 @@ def main():
         print("Error: DISCORD_WEBHOOK secret is not set.")
         return
 
-    # Configuration for burst mode: sends 4 messages per run, 15 seconds apart
-    MESSAGES_TO_SEND = 25
-    DELAY_SECONDS = 7
+    # Configuration for burst mode: sends 5 messages per run with randomized pauses
+    MESSAGES_TO_SEND = 35
 
     for i in range(MESSAGES_TO_SEND):
         chosen_message = random.choice(messages)
@@ -137,9 +239,11 @@ def main():
             print(f"Failed to send. Status code: {response.status_code}")
             print(response.text)
 
-        # Wait before sending the next message (skip delay on the final message)
+        # Wait a random number of seconds between messages (e.g., between 5 and 20 seconds)
         if i < MESSAGES_TO_SEND - 1:
-            time.sleep(DELAY_SECONDS)
+            wait_time = random.randint(5, 15)
+            print(f"Waiting {wait_time} seconds before the next burst...")
+            time.sleep(wait_time)
 
 if __name__ == "__main__":
     main()
