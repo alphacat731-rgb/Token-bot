@@ -116,8 +116,8 @@ def main():
         return
 
     # Configuration for burst mode: sends 4 messages per run, 15 seconds apart
-    MESSAGES_TO_SEND = 4
-    DELAY_SECONDS = 15
+    MESSAGES_TO_SEND = 25
+    DELAY_SECONDS = 7
 
     for i in range(MESSAGES_TO_SEND):
         chosen_message = random.choice(messages)
