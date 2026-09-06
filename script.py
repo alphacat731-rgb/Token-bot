@@ -5,10 +5,6 @@ import requests
 # Grabs the webhook URL from your GitHub repository secrets
 WEBHOOK_URL = os.environ.get("DISCORD_WEBHOOK")
 
-# Replace this with a direct image link (Imgur or Discord CDN). 
-# Do NOT use Spotify image links, as they block webhooks.
-AVATAR_URL = "https://images.genius.com/00000000000000000000000000000000.1000x1000x1.jpg" 
-
 # The list of messages the bot will randomly pick from
 messages = [
     "MEOW",
@@ -124,7 +120,6 @@ def main():
     # The payload now only contains the username, avatar, and the raw text message
     payload = {
         "username": "TOKEN",
-        "avatar_url": AVATAR_URL,
         "content": chosen_message
     }
 
