@@ -1,39 +1,25 @@
 import os
 import random
-import string
 import requests
-import time # Added for the delay timer
 
-WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK")
+# Grabs the webhook URL from your GitHub repository secrets
+WEBHOOK_URL = os.environ.get("DISCORD_WEBHOOK_URL")
 
-if not WEBHOOK_URL:
-    print("Error: DISCORD_WEBHOOK secret is missing.")
-    exit(1)
+# Replace this with a direct image link (Imgur or Discord CDN). 
+# Do NOT use Spotify image links, as they block webhooks.
+AVATAR_URL = "https://preview.redd.it/i-drew-token-pfps-v0-guy4105uhewd1.jpg" 
 
-TOKEN_AVATAR = "https://i.scdn.co/image/ab6761610000e5eb2a265691383ed1cf226b528b"
-EMBED_COLOR = 16711765
-
-FEMTANYL_TRACKS = [
-    {"title": "PUSH UR TEMPER", "url": "https://femtanyl.bandcamp.com/track/push-ur-temper"},
-    {"title": "KATAMARI", "url": "https://femtanyl.bandcamp.com/track/katamari"},
-    {"title": "LOVESICK, CANNIBAL!", "url": "https://femtanyl.bandcamp.com/track/lovesick-cannibal"},
-    {"title": "CHASER", "url": "https://femtanyl.bandcamp.com/track/chaser"},
-    {"title": "ACT RIGHT", "url": "https://femtanyl.bandcamp.com/track/act-right"},
-    {"title": "DINNER!", "url": "https://femtanyl.bandcamp.com/track/dinner"},
-    {"title": "DOGMATICA", "url": "https://femtanyl.bandcamp.com/track/dogmatica"},
-    {"title": "WEIGHTLESS!", "url": "https://femtanyl.bandcamp.com/track/weightless"},
-]
-
-TOKEN_MESSAGES = [
+# The list of messages the bot will randomly pick from
+messages = [
     "MEOW",
-    "MEOOOWWWWWWWWWWWWWWWWW ⚡",
+    "MEOOOWWWWWWWWWWWWWWWWW",
     "WHY IS THE BASS SO LOUD MY TEETH ARE VIBRATING",
     "i dropped my monster energy on the carpet and now it's glowing green",
     "SPEEDRUNNING MY ENTIRE LIFE AT 220 BPM!",
     "HEADPHONES FULL VOLUME NO REGRETS",
     "did anyone hear that noise or is my brain just sampling a blender",
     "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-    "BRB BLEEDING OUT MY EARS FROM THIS SYNTH PASSAGE 😼",
+    "BRB BLEEDING OUT MY EARS FROM THIS SYNTH PASSAGE",
     "turn the master volume up until the speakers start smelling like burning toast",
     "snack time.",
     "who left the distortion plugin on 1000%? (it was me)",
@@ -49,7 +35,7 @@ TOKEN_MESSAGES = [
     "can someone hand me another energy drink thanks",
     "glitch in the system glitch in the system glitch in the system",
     "JUST ONE MORE TRACK I PROMISE!",
-    "HEYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY 😼⚡",
+    "HEYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY,
     "screaming in lowercase",
     "WHO TOOK MY HEADPHONES??",
     "bashing my head against the keyboard: sjfgkdshjgfksdhjgf",
@@ -86,7 +72,7 @@ TOKEN_MESSAGES = [
     "i chewed through the ethernet cable and now i can feel the internet in my teeth",
     "CRUNCH CRUNCH CRUNCH CRUNCH",
     "WHY ARE WE GOING SO FAST??? BECAUSE WE CAN!",
-    "bleep bloop rawrrr ⚡",
+    "bleep bloop rawrrr",
     "is it webcore yet?",
     "NEED MORE DISTORTION. MORE. MORE!!!!!!",
     "i stepped on a squeaky toy and it sampled really well",
@@ -121,56 +107,38 @@ TOKEN_MESSAGES = [
     "AAAAAAHHH WHAT IS THAT SYNTH LEAD?!",
     "static in my head static in my heart static in my speaker",
     "CAN I GET AN AMEN BREAK IN CHAT???",
-    "bite ur ankle 😼",
+    "bite ur ankle",
     "OVERDRIVE ENGAGED",
     "i swallowed an MP3 player and now my tummy goes bump bump bump",
     "ENDLESS ENERGY! NEVER STOPPING!"
 ]
 
-def generate_noise(length=12):
-    chars = string.ascii_lowercase + string.digits + "!@#$%^&*"
-    return ''.join(random.choice(chars) for _ in range(length))
+def main():
+    if not WEBHOOK_URL:
+        print("Error: DISCORD_WEBHOOK_URL secret is not set.")
+        return
 
-# --- THE LOOP ---
-# This makes Token send 5 messages per run, waiting 15 seconds between each.
-# You can change '5' to any number you want (e.g., 10 or 20).
-MESSAGES_TO_SEND = 5
-SECONDS_BETWEEN_MESSAGES = 15
+    # Select a random message from the list
+    chosen_message = random.choice(messages)
 
-print(f"Starting Token burst mode: {MESSAGES_TO_SEND} messages...")
-
-for i in range(MESSAGES_TO_SEND):
-    token_talk = random.choice(TOKEN_MESSAGES)
-    track = random.choice(FEMTANYL_TRACKS)
-
-    description_text = (
-        f"🗣️ **Token says:**\n> \"*{token_talk}*\"\n\n"
-        f"🎧 **Featured Track:** [{track['title']}]({track['url']})\n"
-        f"🔗 **Listen:** [Bandcamp](https://femtanyl.bandcamp.com/) | "
-        f"[Spotify](https://open.spotify.com/artist/7M2R1j8M8PjR6nN2vN6pG3)"
-    )
-
+    # The payload now only contains the username, avatar, and the raw text message
     payload = {
-        "username": "TOKEN 😼⚡",
-        "avatar_url": TOKEN_AVATAR,
-        "embeds": [{
-            "title": "⚡ FEMTANYL / TOKEN BROADCAST",
-            "url": track['url'],
-            "description": description_text,
-            "color": EMBED_COLOR,
-            "footer": {"text": f"BPM: {random.randint(170, 240)} | Noise: {generate_noise(8)}"}
-        }]
+        "username": "TOKEN",
+        "avatar_url": AVATAR_URL,
+        "content": chosen_message
     }
 
-    response = requests.post(WEBHOOK_URL, json=payload)
-
-    if response.status_code == 204:
-        print(f"Message {i+1}/{MESSAGES_TO_SEND} sent!")
-    else:
-        print(f"Failed to send. Status: {response.status_code}")
+    print(f"Sending message: {chosen_message}")
     
-    # Don't wait after the very last message
-    if i < MESSAGES_TO_SEND - 1:
-        time.sleep(SECONDS_BETWEEN_MESSAGES)
+    # Send the request to Discord
+    response = requests.post(WEBHOOK_URL, json=payload)
+    
+    # Check if it was successful
+    if response.status_code in [200, 204]:
+        print("Successfully sent to Discord!")
+    else:
+        print(f"Failed to send. Status code: {response.status_code}")
+        print(response.text)
 
-print("Burst complete! Going back to sleep until GitHub wakes me up.")
+if __name__ == "__main__":
+    main()
